@@ -7,6 +7,7 @@ import { getCryptoDataPrices } from "../../http";
 
 const Wrapper = styled.div`
   width: 100%;
+  margin-top: 20px;
 `;
 const InfoWrapper = styled.div`
   display: flex;
