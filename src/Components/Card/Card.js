@@ -5,6 +5,12 @@ import styled from "styled-components";
 import ProfitIcon from "./ProfitIcon";
 import { Link } from "react-router-dom";
 
+const Container = styled.div`
+  a {
+    text-decoration: none;
+  }
+`;
+
 const Wrapper = styled.div`
   margin: 0 auto;
   display: flex;
@@ -109,37 +115,39 @@ let Card = ({ id, name, image, symbol, price, percentage }) => {
   const prevPrice = usePreviousPrice(price);
 
   useEffect(() => {
-    if (prevPrice > price) {
+    if (prevPrice > price || percentage < 0) {
       setIsProfit(false);
     }
-  }, [prevPrice, price]);
+  }, [prevPrice, price, percentage]);
 
   return (
-    <Wrapper>
-      <Image src={image} alt={name} />
-      <InfoWrapper>
-        <TitleWrapper>
-          <Link
-            to={{
-              pathname: `/${name}`,
-              state: { name, image, price, id },
-            }}
-          >
-            <Title>{name}</Title>
-          </Link>
-          <ShortTitle>{symbol}</ShortTitle>
-        </TitleWrapper>
-        <RateWrapper>
-          <Rate isProfit={isProfit}>
-            ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </Rate>
-          <RatePercentageWrapper>
-            <ProfitIcon isProfit={isProfit} />
-            <div>{percentage.toFixed(2)}%</div>
-          </RatePercentageWrapper>
-        </RateWrapper>
-      </InfoWrapper>
-    </Wrapper>
+    <Container>
+      <Link
+        to={{
+          pathname: `/${name}`,
+          state: { name, image, price, id },
+        }}
+      >
+        <Wrapper>
+          <Image src={image} alt={name} />
+          <InfoWrapper>
+            <TitleWrapper>
+              <Title>{name}</Title>
+              <ShortTitle>{symbol}</ShortTitle>
+            </TitleWrapper>
+            <RateWrapper>
+              <Rate isProfit={isProfit}>
+                ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </Rate>
+              <RatePercentageWrapper>
+                <ProfitIcon isProfit={isProfit} />
+                <div>{percentage.toFixed(2)}%</div>
+              </RatePercentageWrapper>
+            </RateWrapper>
+          </InfoWrapper>
+        </Wrapper>
+      </Link>
+    </Container>
   );
 };
 
